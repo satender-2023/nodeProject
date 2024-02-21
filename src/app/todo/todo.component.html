@@ -1,0 +1,46 @@
+<div class="container">
+  <form (ngSubmit)="addTodo()">
+    <input type="text" name="task" [(ngModel)]="task" placeholder="Task" />
+    &nbsp;
+    <input
+      type="text"
+      name="description"
+      [(ngModel)]="description"
+      placeholder="Description"
+    />
+    &nbsp;
+    <input type="date" name="date" [(ngModel)]="date" placeholder="date" />
+  
+    <!-- <button class="savebtn" type="submit">Save</button> -->
+    <button type="submit" class="btn btn-primary savebtn">Save</button>
+  </form>
+  <br /><br />
+  <hr />
+  <table  class="table table-bordered border-primary">
+    <thead>
+      <tr>
+        <th scope="col">S/No.</th>
+        <th scope="col">Task</th>
+        <th scope="col">Discription</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th> 
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of todo; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ data.task }}</td>
+        <td>{{ data.description }}</td>
+        <td>{{ data.date }}</td>
+        <td>
+          <!-- <button class="editbtn" (click)="editTodo(i)">Edit</button> -->
+          <button type="button" class="btn btn-primary savebtn" (click)="editTodo(i)">Edit</button>
+          <button type="button" class="btn btn-danger deletebtn" (click)="deleteTodo(i)">Delete</button>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>

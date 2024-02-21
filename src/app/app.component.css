@@ -1,0 +1,27 @@
+input.ng-invalid.ng-touched {
+    border: red 2px solid;
+}
+.regForm{
+margin: 5px;
+padding: 5px;
+}
+.mybutton{
+    width: 57px;
+    height: 27px;
+    background-color: #00bcd4b5;
+    border-radius: 10px;
+}
+.formInput{
+height: 25px;
+border-radius: 5px;
+}
+.formInputFile{
+    height: 20px;
+    border-radius: 5px;
+    padding: 5px 4px 6px 10px;
+}
+.imagePreview{
+    width: 125px;
+    height: 125px;
+    padding: 5px;
+}
