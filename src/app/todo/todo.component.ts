@@ -23,8 +23,8 @@ export class TodoComponent implements OnInit {
 
   getAllTodos() {
     this.todoService.getAllTodos().subscribe(
-      (data: any[]) => {
-        this.todo = data;
+      (data: any) => {
+        this.todo = data.data;
       },
       (error) => {
         console.error('Error fetching todos:', error);
@@ -32,23 +32,57 @@ export class TodoComponent implements OnInit {
     );
   }
 
-  addTodo() {
-    const todoData = { task: this.task, description: this.description, date: this.date };
-    this.todoService.addTodo(todoData).subscribe(
-      () => {
-        this.getAllTodos(); // Refresh the list after adding
-        this.resetForm();
-      },
-      (error) => {
-        console.error('Error adding todo:', error);
-      }
-    );
-  }
 
+
+  addTodo() {
+    // Prepare the data for the todo
+    const todoData = {
+      task: this.task,
+      description: this.description,
+      date: this.date
+    };
+  
+    if (this.editIndex === -1) {
+      // Add new todo
+      this.todoService.addTodo(todoData)
+        .subscribe(
+          (resultData: any) => {
+            console.log(resultData);
+            alert("Todo added successfully");
+            this.resetForm();
+            this.getAllTodos();
+          },
+          (error) => {
+            console.error('Error adding todo:', error);
+          }
+        );
+    } else {
+      // Update existing todo
+      const todoId = this.todo[this.editIndex]._id; // Assuming you have an _id field in your todos
+      this.todoService.updateTodo(todoId, todoData)
+        .subscribe(
+          () => {
+            console.log('Todo updated successfully');
+            this.resetForm();
+            this.getAllTodos();
+          },
+          (error) => {
+            console.error('Error updating todo:', error);
+          }
+        );
+    }
+  }
+  
   editTodo(index: number) {
     this.editIndex = index;
-    // You may want to set the values in the form for editing based on this.todo[index]
+    const selectedTodo = this.todo[index];
+  
+    // Update form fields with the selected todo's data
+    this.task = selectedTodo.task;
+    this.description = selectedTodo.description;
+    this.date = selectedTodo.date;
   }
+  
 
   updateTodo() {
     const todoData = { task: this.task, description: this.description, date: this.date };

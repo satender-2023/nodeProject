@@ -15,8 +15,8 @@ mongoose.connect("mongodb://localhost:27017/todo", { family: 4 })
   });
 
 server.use(cors());
-server.use(routes);
 server.use(express.json());
+server.use(routes);
 
 server.listen(3000, function check(error) {
   if (error) {
