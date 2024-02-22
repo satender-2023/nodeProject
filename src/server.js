@@ -4,7 +4,8 @@ var routes = require("./routes/routes");
 var mongoose = require("mongoose");
 const cors = require("cors");
 // Connect to MongoDB using Mongoose
-mongoose.connect("mongodb://127.0.0.1:27017/todo")
+
+mongoose.connect("mongodb://localhost:27017/todo", { family: 4 })
   .then(() => {
     console.log("........DB connected...........");
   })
@@ -23,5 +24,7 @@ server.listen(3000, function check(error) {
   } else {
     console.log("........port started...........");
   }
-  
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });

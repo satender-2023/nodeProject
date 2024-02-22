@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+// todo.component.ts
+
+import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../services/todo.service';
 
 @Component({
@@ -6,49 +8,78 @@ import { TodoService } from '../services/todo.service';
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css'],
 })
-export class TodoComponent {
+export class TodoComponent implements OnInit {
   task = '';
   description = '';
   date = '';
   todo: any[] = [];
-  editIndex = -1; // Initialize to -1 indicating no item is being edited or not in edit mode
+  editIndex = -1;
 
   constructor(private todoService: TodoService) {}
 
   ngOnInit() {
-    this.addTodo()
+    this.getAllTodos();
   }
-// Update addTodo, editTodo, and deleteTodo methods to use the TodoService
-addTodo() {
-  if (this.task) {
-    const newTodo = { task: this.task, description: this.description, date: this.date };
-    this.todoService.addTodo(newTodo).subscribe(
-      (response) => {
-        this.todo = response;
-        console.log(response);
-        
-        // this.clearFields();
+
+  getAllTodos() {
+    this.todoService.getAllTodos().subscribe(
+      (data: any[]) => {
+        this.todo = data;
       },
-      (error: any) => console.error('Error adding todo:', error)
+      (error) => {
+        console.error('Error fetching todos:', error);
+      }
     );
   }
-}
 
-editTodo(index: number) {
-  this.editIndex = index;
-  this.task = this.todo[index].task;
-  this.description = this.todo[index].description;
-  this.date = this.todo[index].date;
-}
+  addTodo() {
+    const todoData = { task: this.task, description: this.description, date: this.date };
+    this.todoService.addTodo(todoData).subscribe(
+      () => {
+        this.getAllTodos(); // Refresh the list after adding
+        this.resetForm();
+      },
+      (error) => {
+        console.error('Error adding todo:', error);
+      }
+    );
+  }
 
-deleteTodo(value: number) {
-  const todoId = this.todo[value]._id;
-  this.todoService.deleteTodo(todoId).subscribe(
-    () => {
-      this.todo.splice(value, 1);
-      console.log('Deleted');
-    },
-    (error: any) => console.error('Error deleting todo:', error)
-  );
-}
+  editTodo(index: number) {
+    this.editIndex = index;
+    // You may want to set the values in the form for editing based on this.todo[index]
+  }
+
+  updateTodo() {
+    const todoData = { task: this.task, description: this.description, date: this.date };
+    const todoId = this.todo[this.editIndex]._id; // Assuming you have an _id field in your todos
+    this.todoService.updateTodo(todoId, todoData).subscribe(
+      () => {
+        this.getAllTodos(); // Refresh the list after updating
+        this.resetForm();
+      },
+      (error) => {
+        console.error('Error updating todo:', error);
+      }
+    );
+  }
+
+  deleteTodo(index: number) {
+    const todoId = this.todo[index]._id; // Assuming you have an _id field in your todos
+    this.todoService.deleteTodo(todoId).subscribe(
+      () => {
+        this.getAllTodos(); // Refresh the list after deleting
+      },
+      (error) => {
+        console.error('Error deleting todo:', error);
+      }
+    );
+  }
+
+  resetForm() {
+    this.task = '';
+    this.description = '';
+    this.date = '';
+    this.editIndex = -1;
+  }
 }

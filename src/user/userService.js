@@ -1,65 +1,62 @@
-var userModel = require("./userModel");
+const userModel = require("./userModel");
 
 module.exports.getDataFromDBService = () => {
-  return new Promise(function checkURL(resolve, reject) {
-    userModel.find({}, function returnData(error, result) {
-      if (error) {
-        reject(false);
-      } else {
-        resolve(result);
-      }
+  return userModel.find({}).exec()
+    .catch(error => {
+      console.error('Error fetching data from the database:', error);
+      throw error; // rethrow the error to be caught by the calling code
     });
-  });
 };
 
 module.exports.createUserDBService = (userDetails) => {
-  return new Promise(function myFn(resolve, reject) {
-    var userModelData = new userModel();
+  return new Promise((resolve, reject) => {
+    if (!userDetails || !userDetails.task || !userDetails.description || !userDetails.date) {
+      reject(new Error('Invalid user details'));  // Reject if userDetails is undefined or missing required properties
+      return;
+    }
 
-    userModelData.task = userDetails.task;
-    userModelData.description = userDetails.description;
-    userModelData.date = userDetails.date;
-
-    userModelData.save(function resultHandle(error, result) {
-      if (error) {
-        reject(false);
-      } else {
-        resolve(true);
-      }
+    const userModelData = new userModel({
+      task: userDetails.task,
+      description: userDetails.description,
+      date: userDetails.date
     });
+
+    userModelData.save()
+      .then(result => resolve(result))
+      .catch(error => {
+        console.error('Error creating user:', error);
+        reject(error);
+      });
   });
 };
 
 module.exports.updateUserDBService = (id, userDetails) => {
-  console.log(userDetails);
-  return new Promise(function myFn(resolve, reject) {
-    userModel.findByIdAndUpdate(
-      id,
-      userDetails,
-      function returnData(error, result) {
-        if (error) {
-          reject(false);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
+  return userModel.findByIdAndUpdate(id, userDetails)
+    .exec()
+    .catch(error => {
+      console.error('Error updating user:', error);
+      throw error;
+    });
 };
 
 module.exports.removeUserDBService = (id) => {
-  return new Promise(function myFn(resolve, reject) {
-    userModel.findByIdAndDelete(id, function returnData(error, result) {
-      if (error) {
-        reject(false);
-      } else {
-        resolve(result);
-      }
+  return userModel.findByIdAndDelete(id)
+    .exec()
+    .catch(error => {
+      console.error('Error deleting user:', error);
+      throw error;
     });
-  });
 };
+
 function myFn(userDetails) {
   userModelData.task = userDetails.task; // This line is causing the error
   userModelData.description = userDetails.description;
   userModelData.date = userDetails.date;
 }
+module.exports.getDataFromDBService = () => {
+  return userModel.find({}).exec()
+    .catch(error => {
+      console.error('Error fetching data from the database:', error);
+      throw error; // rethrow the error to be caught by the calling code
+    });
+};

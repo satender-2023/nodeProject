@@ -5,6 +5,10 @@ const router = express.Router();
 
 const userController = require('./../user/userController');
 
+router.route('/').get((req, res) => {
+    res.send('Welcome to the application!');
+  });
+
 router.route('/user/getAll').get(userController.getDataConntrollerfn);
 
 router.route('/user/create').post(userController.createUserControllerFn);

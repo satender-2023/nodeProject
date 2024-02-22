@@ -1,29 +1,30 @@
-import { HttpClient } from '@angular/common/http';
+// todo.service.ts
+
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:8000/api/todos';
+  private apiUrl = 'http://localhost:3000'; // Replace with your actual API URL
+
   constructor(private http: HttpClient) {}
-  getTodos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+
+  getAllTodos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/user/getAll`);
   }
-  
-  addTodo(todo: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, todo);
+
+  addTodo(todoData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/create`, todoData);
   }
-  
-  updateTodo(id: string, todo: any): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.put<any>(url, todo);
+
+  updateTodo(id: number, todoData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/user/update/${id}`, todoData);
   }
-  
-  deleteTodo(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete(url);
+
+  deleteTodo(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/user/delete/${id}`);
   }
-  
 }
