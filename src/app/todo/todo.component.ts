@@ -48,9 +48,9 @@ export class TodoComponent implements OnInit {
         .subscribe(
           (resultData: any) => {
             console.log(resultData);
-            alert("Todo added successfully");
             this.resetForm();
             this.getAllTodos();
+            // alert("Todo added successfully");
           },
           (error) => {
             console.error('Error adding todo:', error);
@@ -62,9 +62,9 @@ export class TodoComponent implements OnInit {
       this.todoService.updateTodo(todoId, todoData)
         .subscribe(
           () => {
-            console.log('Todo updated successfully');
             this.resetForm();
             this.getAllTodos();
+            // alert('Todo updated successfully');
           },
           (error) => {
             console.error('Error updating todo:', error);
@@ -81,6 +81,7 @@ export class TodoComponent implements OnInit {
     this.task = selectedTodo.task;
     this.description = selectedTodo.description;
     this.date = selectedTodo.date;
+    window.scrollTo(0, 0);
   }
   
 
@@ -99,16 +100,26 @@ export class TodoComponent implements OnInit {
   }
 
   deleteTodo(index: number) {
-    const todoId = this.todo[index]._id; // Assuming you have an _id field in your todos
-    this.todoService.deleteTodo(todoId).subscribe(
-      () => {
-        this.getAllTodos(); // Refresh the list after deleting
-      },
-      (error) => {
-        console.error('Error deleting todo:', error);
-      }
-    );
+    // Ask for confirmation before deleting
+    const confirmDelete = window.confirm('Are you sure you want to delete this to-do item?');
+  
+    if (confirmDelete) {
+      // User clicked "OK" in the confirmation popup
+      const todoId = this.todo[index]._id; // Assuming you have an _id field in your todos
+      this.todoService.deleteTodo(todoId).subscribe(
+        () => {
+          this.getAllTodos(); // Refresh the list after deleting
+        },
+        (error) => {
+          console.error('Error deleting todo:', error);
+        }
+      );
+    } else {
+      // User clicked "Cancel" in the confirmation popup
+      console.log('Deletion canceled.');
+    }
   }
+  
 
   resetForm() {
     this.task = '';

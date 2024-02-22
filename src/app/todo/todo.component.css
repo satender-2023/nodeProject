@@ -5,18 +5,57 @@ td {
   border-collapse: collapse;
   padding: 10px 20px 10px 20px;
 }
+th{
+  background-color: #0066ffad;
+}
 .deletebtn {
- 
   cursor: pointer;
 }
-.editbtn{
-
+.editbtn {
   margin-right: 10px;
 }
 /* .container{
   margin: 20px;
 } */
-.savebtn{
- 
+.savebtn {
   cursor: pointer;
+  margin-top: 15px;
+}
+.delete{
+  width: 5%;
+}
+.edit {
+  width: 5%;
+}
+.serial{
+  width: 10%;
+}
+.task{
+  width: 30%;
+}
+.description{
+  width: 30%;
+}
+.date{
+  width: 20%;
+}
+.action{
+  text-align: center;
+}
+.form-control {
+  width: 50% !important;
+}
+.container {
+  margin-top: 35px;
+}
+.DIV-header {
+  margin-bottom: 12px;
+  width: 50%;
+  background-color: #0066ffad;
+  padding: 10px;
+}
+.header {
+  font-size: large;
+  font-weight: bold;
+  color: white;
 }
