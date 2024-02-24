@@ -27,4 +27,17 @@ export class TodoService {
   deleteTodo(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/user/delete/${id}`);
   }
+
+   // methods for additional details
+   saveAdditionalDetails(id: number, additionalDetails: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/additionalDetails/${id}`, { additionalDetails });
+  }
+
+  updateAdditionalDetails(id: number, additionalDetails: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/user/additionalDetails/${id}`, { additionalDetails });
+  }
+
+  getAdditionalDetails(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user/additionalDetails/${id}`);
+  }
 }

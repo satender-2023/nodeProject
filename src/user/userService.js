@@ -48,6 +48,37 @@ module.exports.removeUserDBService = (id) => {
     });
 };
 
+module.exports.saveAdditionalDetails = (id, additionalDetails) => {
+  return userModel.findByIdAndUpdate(id, { additionalDetails })
+    .exec()
+    .catch(error => {
+      console.error('Error saving additional details:', error);
+      throw error;
+    });
+};
+
+module.exports.updateAdditionalDetails = (id, additionalDetails) => {
+  return userModel.findByIdAndUpdate(id, { additionalDetails })
+    .exec()
+    .catch(error => {
+      console.error('Error updating additional details:', error);
+      throw error;
+    });
+};
+
+module.exports.getAdditionalDetailsDBService = (id) => {
+  return userModel.findById(id)
+      .select('additionalDetails') // Select only the additionalDetails field
+      .exec()
+      .then((result) => {
+          return result.additionalDetails;
+      })
+      .catch(error => {
+          console.error('Error fetching additional details from the database:', error);
+          throw error;
+      });
+};
+
 function myFn(userDetails) {
   userModelData.task = userDetails.task; // This line is causing the error
   userModelData.description = userDetails.description;
@@ -60,3 +91,4 @@ module.exports.getDataFromDBService = () => {
       throw error; // rethrow the error to be caught by the calling code
     });
 };
+

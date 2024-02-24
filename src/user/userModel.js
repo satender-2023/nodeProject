@@ -12,6 +12,9 @@ var userSchema = new Schema({
     date: {
         type: String,
         required: true
+    },
+    additionalDetails: {
+        type: String  
     }
 });
 module.exports = mongoose.model('employees', userSchema);

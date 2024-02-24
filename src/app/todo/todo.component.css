@@ -5,7 +5,7 @@ td {
   border-collapse: collapse;
   padding: 10px 20px 10px 20px;
 }
-th{
+th {
   background-color: #0066ffad;
 }
 .deletebtn {
@@ -21,29 +21,43 @@ th{
   cursor: pointer;
   margin-top: 15px;
 }
-.delete{
+
+.serial {
+  width: 10%;
+}
+.task {
+  width: 30%;
+}
+.description {
+  width: 30%;
+}
+.date {
+  width: 18%;
+}
+.delete {
   width: 5%;
 }
 .edit {
   width: 5%;
 }
-.serial{
-  width: 10%;
+.accordion {
+  width: 2% !important;
+  padding: 0;
 }
-.task{
-  width: 30%;
-}
-.description{
-  width: 30%;
-}
-.date{
-  width: 20%;
-}
-.action{
+.action {
   text-align: center;
 }
-.form-control {
+.taskInput {
   width: 50% !important;
+}
+.additionalBtnUpdate {
+  margin-top: 10px;
+  float: right;
+  margin-right: 5px;
+}
+.additionalBtn {
+  margin-top: 10px;
+  float: right;
 }
 .container {
   margin-top: 35px;
@@ -58,4 +72,7 @@ th{
   font-size: large;
   font-weight: bold;
   color: white;
+}
+#additionalDetails {
+  width: 100% !important;
 }

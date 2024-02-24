@@ -17,4 +17,9 @@ router.route('/user/update/:id').patch(userController.updateUserController);
 
 router.route('/user/delete/:id').delete(userController.deleteUserController);
 
+// New routes for additional details
+router.route('/user/additionalDetails/:id').post(userController.saveAdditionalDetails);
+router.route('/user/additionalDetails/:id').patch(userController.updateAdditionalDetails);
+router.route('/user/additionalDetails/:id').get(userController.getAdditionalDetails);
+
 module.exports = router;

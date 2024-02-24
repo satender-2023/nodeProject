@@ -3,11 +3,12 @@
     <div class="header"><i class="fas fa-list"></i> My Todo List </div>
   </div>
   <form (ngSubmit)="addTodo()">
-    <input type="text" name="task" [(ngModel)]="task" placeholder="Task to do" class="form-control" />
+    <input type="text" name="task" [(ngModel)]="task" placeholder="Task to do" class="form-control taskInput" />
     &nbsp;
-    <input type="text" name="description" [(ngModel)]="description" placeholder="Description" class="form-control" />
+    <input type="text" name="description" [(ngModel)]="description" placeholder="Description"
+      class="form-control taskInput" />
     &nbsp;
-    <input type="date" name="date" [(ngModel)]="date" placeholder="date" class="form-control" />
+    <input type="date" name="date" [(ngModel)]="date" placeholder="date" class="form-control taskInput" />
 
     <!-- <button class="savebtn" type="submit">Save</button> -->
     <button type="submit" class="btn btn-primary savebtn">Save</button>
@@ -21,25 +22,50 @@
         <th scope="col">Task</th>
         <th scope="col">Description</th>
         <th scope="col">Date</th>
-        <th scope="col" colspan="2" class="action">Action</th>
+        <th scope="col" colspan="3" class="action">Action</th>
+
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of todo; let i = index">
-        <td class="serial">{{ i + 1 }}</td>
-        <td class="task">{{ data.task }}</td>
-        <td class="description">{{ data.description }}</td>
-        <td class="date">{{ data.date | date: 'dd-MM-yyyy' }}</td>
-        <td class="edit">
-          <!-- <button class="editbtn" (click)="editTodo(i)">Edit</button> -->
-          <button type="button" class="btn btn-primary editbtn" (click)="editTodo(i)"><i
-              class="fas fa-edit"></i></button>
-        </td>
-        <td class="delete">
-          <button type="button" class="btn btn-danger deletebtn" (click)="deleteTodo(i)"> <i
-              class="fas fa-trash-alt"></i></button>
-        </td>
-      </tr>
+      <ng-container *ngFor="let data of todo; let i = index">
+        <tr>
+
+          <td class="serial">{{ i + 1 }}</td>
+          <td class="task">{{ data.task }}</td>
+          <td class="description">{{ data.description }}</td>
+          <td class="date">{{ data.date | date: 'dd-MM-yyyy' }}</td>
+          <td class="edit">
+            <!-- <button class="editbtn" (click)="editTodo(i)">Edit</button> -->
+            <button type="button" class="btn btn-primary editbtn" (click)="editTodo(i)"><i
+                class="fas fa-edit"></i></button>
+          </td>
+          <td class="delete">
+            <button type="button" class="btn btn-danger deletebtn" (click)="deleteTodo(i)"> <i
+                class="fas fa-trash-alt"></i></button>
+          </td>
+          <td class="accordion">
+            <button class="btn btn-link" (click)="toggleAccordion(i)">
+              <i class="fas fa-chevron-down" *ngIf="!data.showDetails"></i>
+              <i class="fas fa-chevron-up" *ngIf="data.showDetails"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="data.showDetails">
+          <td colspan="7">
+
+            <textarea name="additionalDetails" [(ngModel)]="data.additionalDetails" class="form-control"
+              placeholder="Type additional details here">{{ data.originalDetails }}</textarea>
+
+            <!-- Submit button for additional details -->
+            <button class="btn btn-primary additionalBtn" (click)="submitAdditionalDetails(data)">Submit</button>
+
+            <button class="btn btn-secondary additionalBtnUpdate"
+              (click)="updateAdditionalDetails(data)">Update</button>
+
+          </td>
+        </tr>
+      </ng-container>
+
     </tbody>
   </table>
 
