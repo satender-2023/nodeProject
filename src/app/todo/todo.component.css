@@ -23,7 +23,7 @@ th {
 }
 
 .serial {
-  width: 10%;
+  width: 8%;
 }
 .task {
   width: 30%;
@@ -32,7 +32,7 @@ th {
   width: 30%;
 }
 .date {
-  width: 18%;
+  width: 20%;
 }
 .delete {
   width: 5%;
@@ -76,4 +76,16 @@ th {
 }
 #additionalDetails {
   width: 100% !important;
+}
+
+@media screen and (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+  }
+  .taskInput {
+    width: 100% !important;
+  }
+  .DIV-header {
+    width: 100%;
+  }
 }
