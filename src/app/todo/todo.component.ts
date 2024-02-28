@@ -2,6 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../services/todo.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-todo',
@@ -15,10 +16,18 @@ export class TodoComponent implements OnInit {
   additionalDetails = '';
   todo: any[] = [];
   editIndex = -1;
+  todoForm!: FormGroup;
 
-  constructor(private todoService: TodoService) { }
+
+  constructor(private todoService: TodoService, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.todoForm = this.fb.group({
+      task: ['', Validators.required],
+      description: ['', Validators.required],
+      date: ['', Validators.required],
+    });
+
     this.getAllTodos();
     this.initializeOriginalDetails();
   }
@@ -38,44 +47,30 @@ export class TodoComponent implements OnInit {
 
 
   addTodo() {
-    // Prepare the data for the todo
-    const todoData = {
-      task: this.task,
-      description: this.description,
-      date: this.date
-    };
-
     if (this.editIndex === -1) {
-      // Add new todo
-      this.todoService.addTodo(todoData)
-        .subscribe(
-          (resultData: any) => {
-            console.log(resultData);
-            this.resetForm();
-            this.getAllTodos();
-            // alert("Todo added successfully");
-          },
-          (error) => {
-            console.error('Error adding todo:', error);
-          }
-        );
+      this.todoService.addTodo(this.todoForm.value).subscribe(
+        (resultData: any) => {
+          console.log(resultData);
+          this.resetForm();
+          this.getAllTodos();
+        },
+        (error) => {
+          console.error('Error adding todo:', error);
+        }
+      );
     } else {
-      // Update existing todo
-      const todoId = this.todo[this.editIndex]._id; // Assuming you have an _id field in your todos
-      this.todoService.updateTodo(todoId, todoData)
-        .subscribe(
-          () => {
-            this.resetForm();
-            this.getAllTodos();
-            // alert('Todo updated successfully');
-          },
-          (error) => {
-            console.error('Error updating todo:', error);
-          }
-        );
+      const todoId = this.todo[this.editIndex]._id;
+      this.todoService.updateTodo(todoId, this.todoForm.value).subscribe(
+        () => {
+          this.resetForm();
+          this.getAllTodos();
+        },
+        (error) => {
+          console.error('Error updating todo:', error);
+        }
+      );
     }
   }
-
 
   submitAdditionalDetails(todoItem: any): void {
     // You may want to implement the logic to save additional details to the backend
@@ -135,14 +130,9 @@ export class TodoComponent implements OnInit {
   editTodo(index: number) {
     this.editIndex = index;
     const selectedTodo = this.todo[index];
-
-    // Update form fields with the selected todo's data
-    this.task = selectedTodo.task;
-    this.description = selectedTodo.description;
-    this.date = selectedTodo.date;
+    this.todoForm.patchValue(selectedTodo);
     window.scrollTo(0, 0);
   }
-
 
   updateTodo() {
     const todoData = { task: this.task, description: this.description, date: this.date };
@@ -181,9 +171,8 @@ export class TodoComponent implements OnInit {
 
 
   resetForm() {
-    this.task = '';
-    this.description = '';
-    this.date = '';
+    this.todoForm.reset();
     this.editIndex = -1;
   }
 }
+

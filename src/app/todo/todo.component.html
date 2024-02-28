@@ -2,17 +2,16 @@
   <div class="DIV-header">
     <div class="header"><i class="fas fa-list"></i> My Todo List </div>
   </div>
-  <form (ngSubmit)="addTodo()">
-    <input type="text" name="task" [(ngModel)]="task" placeholder="Task to do" class="form-control taskInput" />
+  <form [formGroup]="todoForm" (ngSubmit)="addTodo()">
+    <input type="text" formControlName="task" placeholder="Task to do" class="form-control taskInput" />
     &nbsp;
-    <input type="text" name="description" [(ngModel)]="description" placeholder="Description"
-      class="form-control taskInput" />
+    <input type="text" formControlName="description" placeholder="Description" class="form-control taskInput" />
     &nbsp;
-    <input type="date" name="date" [(ngModel)]="date" placeholder="date" class="form-control taskInput" />
-
-    <!-- <button class="savebtn" type="submit">Save</button> -->
+    <input type="date" formControlName="date" placeholder="date" class="form-control taskInput" />
+  
     <button type="submit" class="btn btn-primary savebtn">Save</button>
   </form>
+  
   <br /><br />
   <hr />
   <div class="table-container">
